@@ -24,12 +24,14 @@ RUN set -eux; \
     curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     # Install Node.js
     apt-get install -yqq nodejs && \
-    # Install Python and Node packages
+    # Install Python packages
     pip install -U pip~=23.0.1 && \
     pip install "urllib3<2" pdm~=2.5.2 && \
-    npm i -g npm@^8 pnpm@~9.5.0 && \
     # Clean up to reduce image size
     rm -rf /var/lib/apt/lists/*
+
+# Install Node packages in a separate RUN command
+RUN npm i -g npm@^8 pnpm@~9.5.0
 
 COPY --from=chamber /chamber /bin/chamber
 
