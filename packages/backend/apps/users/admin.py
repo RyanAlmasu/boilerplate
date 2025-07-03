@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.translation import gettext_lazy as _
 from rest_framework_simplejwt.token_blacklist import admin as token_admin, models as token_models
-from . import tasks
+# from . import tasks
 from . import models
 
 admin.site.unregister(token_models.OutstandingToken)
@@ -83,6 +83,7 @@ class UserAdmin(BaseUserAdmin):
     actions = ["export_user_data"]
 
     def export_user_data(self, request, queryset):
+        from . import tasks
         data = {
             "user_ids": [str(user_id) for user_id in queryset.values_list("id", flat=True)],
             "admin_email": request.user.email,
